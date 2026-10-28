@@ -22,6 +22,13 @@ import {
   listProjectIssuesController,
 } from "../controllers/issue.controller.js";
 
+import { createCommentSchema } from "../validators/comment.validator.js";
+
+import {
+  listIssueCommentsController,
+  createIssueCommentController,
+} from "../controllers/comment.controller.js";
+
 const router = Router();
 
 // Every issue endpoint requires authentication.
@@ -42,6 +49,7 @@ router.get(
   listProjectIssuesController
 );
 
+
 // PATCH /api/v1/issues/:issueId/status
 // Keep this route before the generic issue routes.
 router.patch(
@@ -49,6 +57,21 @@ router.patch(
   validate(issueParamsSchema, "params"),
   validate(changeIssueStatusSchema),
   changeIssueStatusController
+);
+
+// GET /api/v1/issues/:issueId/comments
+router.get(
+  "/:issueId/comments",
+  validate(issueParamsSchema, "params"),
+  listIssueCommentsController
+);
+
+// POST /api/v1/issues/:issueId/comments
+router.post(
+  "/:issueId/comments",
+  validate(issueParamsSchema, "params"),
+  validate(createCommentSchema),
+  createIssueCommentController
 );
 
 // GET /api/v1/issues/:issueId/history
