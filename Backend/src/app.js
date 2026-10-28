@@ -12,6 +12,8 @@ import {
   notFoundHandler,
   errorHandler,
 } from "./middleware/error.middleware.js";
+import projectRoutes from "./routes/project.routes.js";
+import issueRoutes from "./routes/issue.routes.js";
 
 const app = express();
 
@@ -71,6 +73,9 @@ app.use("/api/v1", verifyRequestOrigin);
 
 // Authentication routes
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/projects", projectRoutes);
+app.use("/api/v1/issues", issueRoutes);
+
 
 // Handle unknown routes and errors last
 app.use(notFoundHandler);
