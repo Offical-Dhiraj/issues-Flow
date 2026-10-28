@@ -57,3 +57,8 @@ export const issueQuerySchema = z.object({
   sortBy: z.enum(["createdAt", "updatedAt", "title", "priority", "status"]).default("updatedAt"),
   sortOrder: z.enum(["asc", "desc"]).default("desc"),
 }).strict();
+
+
+export const changeIssueStatusSchema = z.object({
+  status: z.enum(["open", "in_progress", "in_review", "closed"]),
+}).strict();
