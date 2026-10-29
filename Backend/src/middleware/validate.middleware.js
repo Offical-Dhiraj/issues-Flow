@@ -1,12 +1,12 @@
 
-export function validate(schema, source = "body") {
+export function validate(schema, location = "body") {
   return (req, res, next) => {
-    const result = schema.safeParse(req[source]);
+    const result = schema.safeParse(req[location]);
 
     if (!result.success) {
       return res.status(400).json({
         success: false,
-        message: "Validation failed",
+        message: "Validation failed.",
         errors: result.error.issues.map((issue) => ({
           field: issue.path.join("."),
           message: issue.message,
@@ -14,7 +14,9 @@ export function validate(schema, source = "body") {
       });
     }
 
-    req[source] = result.data;
-    next();
+    res.locals.validated ??= {};
+    res.locals.validated[location] = result.data;
+
+    return next();
   };
 }

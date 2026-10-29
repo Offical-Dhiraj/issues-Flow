@@ -29,6 +29,19 @@ import {
   createIssueCommentController,
 } from "../controllers/comment.controller.js";
 
+import {
+  completionReportParamsSchema,
+  reviewCompletionReportParamsSchema,
+  createCompletionReportSchema,
+  reviewCompletionReportSchema,
+} from "../validators/completionReport.validator.js";
+
+import {
+  createCompletionReport,
+  getCompletionReports,
+  reviewCompletionReportController,
+} from "../controllers/completionReport.controller.js";
+
 const router = Router();
 
 // Every issue endpoint requires authentication.
@@ -49,9 +62,30 @@ router.get(
   listProjectIssuesController
 );
 
+// POST /api/v1/issues/:issueId/completion-reports
+router.post(
+  "/:issueId/completion-reports",
+  validate(completionReportParamsSchema, "params"),
+  validate(createCompletionReportSchema),
+  createCompletionReport
+);
+
+// GET /api/v1/issues/:issueId/completion-reports
+router.get(
+  "/:issueId/completion-reports",
+  validate(completionReportParamsSchema, "params"),
+  getCompletionReports
+);
+
+// POST /api/v1/issues/:issueId/completion-reports/:reportId/review
+router.post(
+  "/:issueId/completion-reports/:reportId/review",
+  validate(reviewCompletionReportParamsSchema, "params"),
+  validate(reviewCompletionReportSchema),
+  reviewCompletionReportController
+);
 
 // PATCH /api/v1/issues/:issueId/status
-// Keep this route before the generic issue routes.
 router.patch(
   "/:issueId/status",
   validate(issueParamsSchema, "params"),

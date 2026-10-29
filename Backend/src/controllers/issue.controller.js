@@ -73,11 +73,14 @@ export async function getIssueHistoryController(req, res) {
   });
 }
 
+
 export async function listProjectIssuesController(req, res) {
+  const query = res.locals.validated?.query ?? req.query;
+
   const result = await listProjectIssues(
     req.user.id,
     req.params.projectId,
-    req.query
+    query
   );
 
   return res.status(200).json({
